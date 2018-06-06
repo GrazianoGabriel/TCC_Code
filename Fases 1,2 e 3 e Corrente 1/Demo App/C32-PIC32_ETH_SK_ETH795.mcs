@@ -1,0 +1,188 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\MainDemo.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File001]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\ARP.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File002]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\ETHPIC32ExtPhy.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File003]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\ETHPIC32ExtPhySMSC8720.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File004]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\ETHPIC32IntMac.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File005]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\IP.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File006]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\StackTsk.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File007]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\TCP.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File008]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\Tick.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File009]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\DNS.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File010]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\Helpers.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File011]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\Obj-C32-PIC32_ETH_SK_ETH795\UDP.o
+Folder=Intermediary
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g -DCFG_INCLUDE_PIC32_ETH_SK_ETH795 -Wall
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File012]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\C32-PIC32_ETH_SK_ETH795.elf
+Folder=Output
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=--defsym=_min_heap_size=16000 --defsym=_min_stack_size=2048 -Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -Os
+TraceCmdString=
+DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PK3=1 --defsym=__ICD2RAM=1
+[File013]
+Location=C:\Users\Gabriel_UNL\Desktop\FW\Fases 1,2 e 3 e Corrente 1\Demo App\C32-PIC32_ETH_SK_ETH795.hex
+Folder=Output
+DeviceName=PIC32MX795F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)|Obj-C32-PIC32_ETH_SK_ETH795||$(AINDIR)||$(INCDIR)|..\Microchip\Include\Peripheral;..\..\Microchip\Include\Peripheral;.;..\Microchip\Include;..\..\Microchip\Include||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|MainDemo.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ARP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhy.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32ExtPhySMSC8720.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\ETHPIC32IntMac.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\IP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\StackTsk.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\TCP.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Tick.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\DNS.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\Helpers.c|C:\Users\Gabriel_UNL\Desktop\FW\Microchip\TCPIP Stack_include\UDP.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=--defsym=_min_heap_size=16000 --defsym=_min_stack_size=2048 -Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -Os
+TraceCmdString=
+DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PK3=1 --defsym=__ICD2RAM=1
+[TOOL_LOC_STAMPS]
+tool_loc{430F471F-7ECB-4852-A80D-DEF9A5C8E751}=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-gcc.exe
+tool_loc{C68E5105-1196-4333-A0BF-3DC57271E614}=C:\Program Files (x86)\Microchip\mplabc32\v2.02\bin\pic32-ld.exe
