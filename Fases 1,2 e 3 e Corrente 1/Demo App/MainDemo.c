@@ -3,8 +3,6 @@
 #include "TCPIPConfig.h"			// Include all headers for any enabled TCPIP Stack functions
 #include "TCPIP Stack/TCPIP.h"
 #include "MainDemo.h"
-#include "time.h"
-#include "stdio.h"
 
 //* Configuration Bits
 #pragma config FNOSC    = PRIPLL    // Oscillator Selection
@@ -68,8 +66,8 @@ static signed int    VARMS;
 static signed int    VBRMS;
 static signed int    VCRMS;
 static signed int    FQA; 
-int i=0;
-
+int count=0; 
+float temp=0; 
 
 //* Funções
 static void InitAppConfig(void);
@@ -90,8 +88,6 @@ int main(void){
   unsigned int  MAIN_CONT;
   static TCP_SOCKET	MySocket;
   unsigned char TCPServerState=SM_HOME;  
-  //unsigned int i;
-  //time_t start_t, end_t;
                 
   //****** Configuração dos pinos de I/O
   AD1PCFG=0xffffffff; 	//Todos os pinos digitais
@@ -145,12 +141,19 @@ int main(void){
   SPI_WRITE(1,0x14,0x00,0x00,0x00); //Freq para o canal A
   SPI_WRITE(3,0x18,0x01,0x00,0x08); //Registrador INTERRUPT MASK com WFSM habilitado 
 
-  //***** Configurações do Timer2 T2 para 22ms
+  //***** Configurações do Timer2 T2 para 100ms
   T2CON=0x8070;                     //Prescaler de 1/256 = 80/256 = 0,3125MHz (3,2us)
   PR2=31250;                        //Carga para comparação = 31250 x 3,2us = 100ms
   IPC2bits.T2IP=6;					//Interrupt priority 6
   IFS0bits.T2IF=0;                  //Interrupt flag
   IEC0bits.T2IE=1;					//Habilita interrupção para o Timer2
+
+  //***** Configurações do Timer3 T3 para 16ms
+  T3CON=0x8070;                     //Prescaler de 1/256 = 80/256 = 0,3125MHz (3,2us)
+  PR3=5000;                         //Carga para comparação = 5000 x 3,2us = 16ms
+  IPC3bits.T3IP=5;					//Interrupt priority 5
+  IFS0bits.T3IF=0;                  //Interrupt flag
+  IEC0bits.T3IE=0;					//Habilita interrupção para o Timer3 quando ocorrer SAG
 
   //****** Reseta o PHY Ehernet
   PHY_RST=0;   
@@ -172,14 +175,6 @@ int main(void){
   
   //****** POOLING GERAL
   while(1){    
- 
-    if(i==1){
-    //inicia tempo
-    while(i==1){}
-    //para tempo
-    //salva data e hora
-    
-    }
    
     //****** Máquina de estados TCP Server
     StackTask();
@@ -240,14 +235,6 @@ int main(void){
 
           //Verifica se recebeu a mensagem VDT (Verify date_time) 
           else if(FRAME_RXBUF[0]=='V' && FRAME_RXBUF[1]=='D' && FRAME_RXBUF[2]=='T') {
-
-            //start_t = time(NULL);
-            //for(i=0; i<20000000;i++){}
-            //end_t = time(NULL);
-
-            //total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-            //tempo = difftime(start_t, end_t);
-
             FRAME_TXMESS=2;  
             TCPServerState=SM_PROCESS_TRANSMIT;  
           }
@@ -270,8 +257,7 @@ int main(void){
         else if(FRAME_TXMESS==3){
         
         //*****SAG
-        if(i==1){
-        i=0;
+        if(VARMS < 0.9*VRMS){
         FRAME_TXBUF[0]=0x20; 
         FRAME_TXBUF[1]='S';
 		FRAME_TXBUF[2]='A';
@@ -536,11 +522,28 @@ void __ISR(_TIMER_2_VECTOR,ipl6) _T2Interrupt(void){
 
   //Realiza a aquisição das tensões RMS
   getAVRMS();
-  
+
   if(VARMS < 0.9*VRMS){
-    i = 1;  
+     IEC0bits.T3IE=1; //Inicia a interrupção do Timer3
   }
-  
+
   getBVRMS();
   getCVRMS();
+}
+
+/*********************************************************************
+**************************** Timer 3 Interrupt ***********************
+*********************************************************************/
+void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){ 
+
+  //Limpa o flag da interrupção 
+  IFS0bits.T3IF=0;
+  
+  count++;
+
+  if(VARMS >= 0.9*VRMS){
+     IEC0bits.T3IE=0; //Desabilita a interrupcao do Timer3
+     temp = 0.016*count;
+     count=0;
+  }
 }
