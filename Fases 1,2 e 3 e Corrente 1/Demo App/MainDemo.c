@@ -62,12 +62,16 @@ APP_CONFIG AppConfig;
 //* Variáveis Globais
 unsigned char SPI_DUMMY;
 unsigned char SPI_DATA_RX[3];
+unsigned char i;
+unsigned char j;
+unsigned char event;
 static signed int    VARMS;
 static signed int    VBRMS;
 static signed int    VCRMS;
 static signed int    FQA; 
-int count=0; 
-float temp=0; 
+unsigned int count=0; 
+float temp=0;
+unsigned long time;
 
 //* Funções
 static void InitAppConfig(void);
@@ -154,6 +158,13 @@ int main(void){
   IPC3bits.T3IP=5;					//Interrupt priority 5
   IFS0bits.T3IF=0;                  //Interrupt flag
   IEC0bits.T3IE=0;					//Habilita interrupção para o Timer3 quando ocorrer SAG
+
+  //***** Configurações do Timer4 T4 para 16ms
+  T4CON=0x8070;                     //Prescaler de 1/256 = 80/256 = 0,3125MHz (3,2us)
+  PR4=5000;                         //Carga para comparação = 5000 x 3,2us = 16ms
+  IPC4bits.T4IP=5;					//Interrupt priority 5
+  IFS0bits.T4IF=0;                  //Interrupt flag
+  IEC0bits.T4IE=0;					//Habilita interrupção para o Timer3 quando ocorrer SAG
 
   //****** Reseta o PHY Ehernet
   PHY_RST=0;   
@@ -257,19 +268,36 @@ int main(void){
         else if(FRAME_TXMESS==3){
         
         //*****SAG
-        if(VARMS < 0.9*VRMS){
+        if(i==1){
+        i=0;  
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]='S';
-		FRAME_TXBUF[2]='A';
-        FRAME_TXBUF[3]='G';
-        FRAME_TXBUF[4]=0x0D;
-        FRAME_TXBUF[5]=0x0A;
+        FRAME_TXBUF[1]=(((RTCDATE>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((RTCDATE>>8)&0x0f)+0x30);
+		FRAME_TXBUF[3]='/';
+		FRAME_TXBUF[4]=(((RTCDATE>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((RTCDATE>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[6]=' ';
+		FRAME_TXBUF[7]=(((time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[9]=':';
+		FRAME_TXBUF[10]=(((time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((time>>16)&0x0f)+0x30);
+		FRAME_TXBUF[12]=':';
+		FRAME_TXBUF[13]=(((time>>12)&0x0f)+0x30);
+		FRAME_TXBUF[14]=(((time>>8)&0x0f)+0x30);
+        FRAME_TXBUF[15]=' '; 
+        FRAME_TXBUF[16]='A';
+		FRAME_TXBUF[17]=event;
+        FRAME_TXBUF[18]='T';
+        FRAME_TXBUF[19]=0x0D;
+        FRAME_TXBUF[20]=0x0A;
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,6);
+        TCPPutArray(MySocket,FRAME_TXBUF,21);
         }
         
         //****SWELL
-        else if(VARMS > 1.1*VRMS){
+        else if(j==1){
+        j=0;
         FRAME_TXBUF[0]=0x20; 
         FRAME_TXBUF[1]='S';
 		FRAME_TXBUF[2]='W';
@@ -527,6 +555,10 @@ void __ISR(_TIMER_2_VECTOR,ipl6) _T2Interrupt(void){
      IEC0bits.T3IE=1; //Inicia a interrupção do Timer3
   }
 
+  if(VARMS > 1.1*VRMS){
+     IEC0bits.T4IE=1; //Inicia a interrupção do Timer4
+  }
+
   getBVRMS();
   getCVRMS();
 }
@@ -542,8 +574,33 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
   count++;
 
   if(VARMS >= 0.9*VRMS){
-     IEC0bits.T3IE=0; //Desabilita a interrupcao do Timer3
+     IEC0bits.T3IE=0;     //Desabilita a interrupcao do Timer3
+     temp = 0.016*count;  //Calcula a duração da VTCD
+
+     if(temp < 0.5){event=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){event=0x4D;} //Momentaneo
+     else {event=0x54;}                            //Temporario
+
+     time=RTCTIME;        //Salva o momento da ocorrencia
+     count=0;             //Zera o contador
+     i=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SAG
+  }
+}
+
+/*********************************************************************
+**************************** Timer 4 Interrupt ***********************
+*********************************************************************/
+void __ISR(_TIMER_4_VECTOR,ipl5) _T4Interrupt(void){ 
+
+  //Limpa o flag da interrupção 
+  IFS0bits.T4IF=0;
+  
+  count++;
+
+  if(VARMS <= 1.1*VRMS){
+     IEC0bits.T4IE=0; //Desabilita a interrupcao do Timer4
      temp = 0.016*count;
      count=0;
+     j=1;
   }
 }
