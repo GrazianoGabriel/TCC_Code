@@ -64,14 +64,16 @@ unsigned char SPI_DUMMY;
 unsigned char SPI_DATA_RX[3];
 unsigned char i;
 unsigned char j;
-unsigned char event;
+unsigned char sagEvent;
+unsigned char swellEvent;
 static signed int    VARMS;
 static signed int    VBRMS;
 static signed int    VCRMS;
 static signed int    FQA; 
 unsigned int count=0; 
 float temp=0;
-unsigned long time;
+unsigned long sagT;
+unsigned long swellT;
 
 //* Funções
 static void InitAppConfig(void);
@@ -277,37 +279,44 @@ int main(void){
 		FRAME_TXBUF[4]=(((RTCDATE>>20)&0x0f)+0x30);
 		FRAME_TXBUF[5]=(((RTCDATE>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
-		FRAME_TXBUF[7]=(((time>>28)&0x0f)+0x30);
-		FRAME_TXBUF[8]=(((time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[7]=(((sagT>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((sagT>>24)&0x0f)+0x30);
 		FRAME_TXBUF[9]=':';
-		FRAME_TXBUF[10]=(((time>>20)&0x0f)+0x30);
-		FRAME_TXBUF[11]=(((time>>16)&0x0f)+0x30);
-		FRAME_TXBUF[12]=':';
-		FRAME_TXBUF[13]=(((time>>12)&0x0f)+0x30);
-		FRAME_TXBUF[14]=(((time>>8)&0x0f)+0x30);
-        FRAME_TXBUF[15]=' '; 
-        FRAME_TXBUF[16]='A';
-		FRAME_TXBUF[17]=event;
-        FRAME_TXBUF[18]='T';
-        FRAME_TXBUF[19]=0x0D;
-        FRAME_TXBUF[20]=0x0A;
+		FRAME_TXBUF[10]=(((sagT>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((sagT>>16)&0x0f)+0x30);
+        FRAME_TXBUF[12]=' '; 
+        FRAME_TXBUF[13]='A';
+		FRAME_TXBUF[14]=sagEvent;
+        FRAME_TXBUF[15]='T';
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,21);
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
         }
         
         //****SWELL
         else if(j==1){
         j=0;
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]='S';
-		FRAME_TXBUF[2]='W';
-        FRAME_TXBUF[3]='E';
-        FRAME_TXBUF[4]='L';
-        FRAME_TXBUF[5]='L';
-        FRAME_TXBUF[6]=0x0D;
-        FRAME_TXBUF[7]=0x0A;
+        FRAME_TXBUF[1]=(((RTCDATE>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((RTCDATE>>8)&0x0f)+0x30);
+		FRAME_TXBUF[3]='/';
+		FRAME_TXBUF[4]=(((RTCDATE>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((RTCDATE>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[6]=' ';
+		FRAME_TXBUF[7]=(((swellT>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((swellT>>24)&0x0f)+0x30);
+		FRAME_TXBUF[9]=':';
+		FRAME_TXBUF[10]=(((swellT>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((swellT>>16)&0x0f)+0x30);
+        FRAME_TXBUF[12]=' '; 
+        FRAME_TXBUF[13]='E';
+		FRAME_TXBUF[14]=swellEvent;  //De acordo com a duracao. EIT, EMT ou ETT
+        FRAME_TXBUF[15]='T';
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,8);
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
         }
         
         //****Operacao Normal
@@ -577,11 +586,11 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
      IEC0bits.T3IE=0;     //Desabilita a interrupcao do Timer3
      temp = 0.016*count;  //Calcula a duração da VTCD
 
-     if(temp < 0.5){event=0x49;}                   //Instantaneo
-     else if(temp >= 0.5 && temp < 3){event=0x4D;} //Momentaneo
-     else {event=0x54;}                            //Temporario
+     if(temp < 0.5){sagEvent=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){sagEvent=0x4D;} //Momentaneo
+     else {sagEvent=0x54;}                            //Temporario
 
-     time=RTCTIME;        //Salva o momento da ocorrencia
+     sagT=RTCTIME;        //Salva o momento da ocorrencia
      count=0;             //Zera o contador
      i=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SAG
   }
@@ -600,7 +609,13 @@ void __ISR(_TIMER_4_VECTOR,ipl5) _T4Interrupt(void){
   if(VARMS <= 1.1*VRMS){
      IEC0bits.T4IE=0; //Desabilita a interrupcao do Timer4
      temp = 0.016*count;
-     count=0;
-     j=1;
+
+     if(temp < 0.5){swellEvent=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){swellEvent=0x4D;} //Momentaneo
+     else {swellEvent=0x54;}                            //Temporario
+     
+     swellT=RTCTIME;        //Salva o momento da ocorrencia
+     count=0;             //Zera o contador
+     j=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SWELL
   }
 }
