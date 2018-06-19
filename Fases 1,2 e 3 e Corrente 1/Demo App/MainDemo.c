@@ -74,6 +74,8 @@ unsigned int count=0;
 float temp=0;
 unsigned long sagT;
 unsigned long swellT;
+unsigned long sagD;
+unsigned long swellD;
 
 //* Funções
 static void InitAppConfig(void);
@@ -268,16 +270,16 @@ int main(void){
         
         // **** VTCD
         else if(FRAME_TXMESS==3){
-        
+
         //*****SAG
         if(i==1){
         i=0;  
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]=(((RTCDATE>>12)&0x0f)+0x30);
-		FRAME_TXBUF[2]=(((RTCDATE>>8)&0x0f)+0x30);
+        FRAME_TXBUF[1]=(((sagD>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((sagD>>8)&0x0f)+0x30);
 		FRAME_TXBUF[3]='/';
-		FRAME_TXBUF[4]=(((RTCDATE>>20)&0x0f)+0x30);
-		FRAME_TXBUF[5]=(((RTCDATE>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[4]=(((sagD>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((sagD>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
 		FRAME_TXBUF[7]=(((sagT>>28)&0x0f)+0x30);
 		FRAME_TXBUF[8]=(((sagT>>24)&0x0f)+0x30);
@@ -298,11 +300,11 @@ int main(void){
         else if(j==1){
         j=0;
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]=(((RTCDATE>>12)&0x0f)+0x30);
-		FRAME_TXBUF[2]=(((RTCDATE>>8)&0x0f)+0x30);
+        FRAME_TXBUF[1]=(((swellD>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((swellD>>8)&0x0f)+0x30);
 		FRAME_TXBUF[3]='/';
-		FRAME_TXBUF[4]=(((RTCDATE>>20)&0x0f)+0x30);
-		FRAME_TXBUF[5]=(((RTCDATE>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[4]=(((swellD>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((swellD>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
 		FRAME_TXBUF[7]=(((swellT>>28)&0x0f)+0x30);
 		FRAME_TXBUF[8]=(((swellT>>24)&0x0f)+0x30);
@@ -329,6 +331,7 @@ int main(void){
         //Carrega no buffer os dados a serem transmitidos
         TCPPutArray(MySocket,FRAME_TXBUF,5);
         }
+
         }//End of VTCD
         
         // **** VDT
@@ -591,6 +594,7 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
      else {sagEvent=0x54;}                            //Temporario
 
      sagT=RTCTIME;        //Salva o momento da ocorrencia
+     sagD=RTCDATE;        //Salva a data da ocorrencia
      count=0;             //Zera o contador
      i=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SAG
   }
@@ -614,7 +618,8 @@ void __ISR(_TIMER_4_VECTOR,ipl5) _T4Interrupt(void){
      else if(temp >= 0.5 && temp < 3){swellEvent=0x4D;} //Momentaneo
      else {swellEvent=0x54;}                            //Temporario
      
-     swellT=RTCTIME;        //Salva o momento da ocorrencia
+     swellT=RTCTIME;      //Salva o momento da ocorrencia
+     swellD=RTCDATE;      //Salva a data da ocorrencia 
      count=0;             //Zera o contador
      j=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SWELL
   }
