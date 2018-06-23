@@ -65,7 +65,7 @@ unsigned char SPI_DATA_RX[3];
 unsigned char i;
 unsigned char j;
 unsigned char sagEvent;
-unsigned char swellEvent;
+//unsigned char swellEvent;
 static signed int    VARMS;
 static signed int    VBRMS;
 static signed int    VCRMS;
@@ -73,9 +73,20 @@ static signed int    FQA;
 unsigned int count=0; 
 float temp=0;
 unsigned long sagT;
-unsigned long swellT;
+//unsigned long swellT;
 unsigned long sagD;
-unsigned long swellD;
+//unsigned long swellD;
+
+//Cria STRUCT VTCD
+typedef struct
+{ 
+  unsigned long data;
+  unsigned long hora;
+  unsigned char tipo; 
+} VTCD; //Nome do novo tipo criado
+
+VTCD Sag[10];
+VTCD Swell[10];
 
 //* Funções
 static void InitAppConfig(void);
@@ -300,20 +311,20 @@ int main(void){
         else if(j==1){
         j=0;
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]=(((swellD>>12)&0x0f)+0x30);
-		FRAME_TXBUF[2]=(((swellD>>8)&0x0f)+0x30);
+        FRAME_TXBUF[1]=(((Swell[0].data>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((Swell[0].data>>8)&0x0f)+0x30);
 		FRAME_TXBUF[3]='/';
-		FRAME_TXBUF[4]=(((swellD>>20)&0x0f)+0x30);
-		FRAME_TXBUF[5]=(((swellD>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[4]=(((Swell[0].data>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((Swell[0].data>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
-		FRAME_TXBUF[7]=(((swellT>>28)&0x0f)+0x30);
-		FRAME_TXBUF[8]=(((swellT>>24)&0x0f)+0x30);
+		FRAME_TXBUF[7]=(((Swell[0].hora>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((Swell[0].hora>>24)&0x0f)+0x30);
 		FRAME_TXBUF[9]=':';
-		FRAME_TXBUF[10]=(((swellT>>20)&0x0f)+0x30);
-		FRAME_TXBUF[11]=(((swellT>>16)&0x0f)+0x30);
+		FRAME_TXBUF[10]=(((Swell[0].hora>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((Swell[0].hora>>16)&0x0f)+0x30);
         FRAME_TXBUF[12]=' '; 
         FRAME_TXBUF[13]='E';
-		FRAME_TXBUF[14]=swellEvent;  //De acordo com a duracao. EIT, EMT ou ETT
+		FRAME_TXBUF[14]=Swell[0].tipo;  //De acordo com a duracao. EIT, EMT ou ETT
         FRAME_TXBUF[15]='T';
         FRAME_TXBUF[16]=0x0D;
         FRAME_TXBUF[17]=0x0A;
@@ -614,12 +625,12 @@ void __ISR(_TIMER_4_VECTOR,ipl5) _T4Interrupt(void){
      IEC0bits.T4IE=0; //Desabilita a interrupcao do Timer4
      temp = 0.016*count;
 
-     if(temp < 0.5){swellEvent=0x49;}                   //Instantaneo
-     else if(temp >= 0.5 && temp < 3){swellEvent=0x4D;} //Momentaneo
-     else {swellEvent=0x54;}                            //Temporario
+     if(temp < 0.5){Swell[0].tipo=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){Swell[0].tipo=0x4D;} //Momentaneo
+     else {Swell[0].tipo=0x54;}                            //Temporario
      
-     swellT=RTCTIME;      //Salva o momento da ocorrencia
-     swellD=RTCDATE;      //Salva a data da ocorrencia 
+     Swell[0].hora=RTCTIME;      //Salva o momento da ocorrencia
+     Swell[0].data=RTCDATE;      //Salva a data da ocorrencia 
      count=0;             //Zera o contador
      j=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SWELL
   }
