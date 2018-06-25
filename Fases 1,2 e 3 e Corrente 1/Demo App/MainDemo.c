@@ -62,31 +62,25 @@ APP_CONFIG AppConfig;
 //* Variáveis Globais
 unsigned char SPI_DUMMY;
 unsigned char SPI_DATA_RX[3];
-unsigned char i;
-unsigned char j;
-unsigned char sagEvent;
-//unsigned char swellEvent;
+unsigned char j=0;
+unsigned char aux;
 static signed int    VARMS;
 static signed int    VBRMS;
 static signed int    VCRMS;
 static signed int    FQA; 
 unsigned int count=0; 
 float temp=0;
-unsigned long sagT;
-//unsigned long swellT;
-unsigned long sagD;
-//unsigned long swellD;
 
 //Cria STRUCT VTCD
 typedef struct
 { 
-  unsigned long data;
-  unsigned long hora;
-  unsigned char tipo; 
-} VTCD; //Nome do novo tipo criado
+  unsigned long date;
+  unsigned long time;
+  unsigned char type;
+  unsigned char i;
+} VTCD;
 
-VTCD Sag[10];
-VTCD Swell[10];
+VTCD Event[10];
 
 //* Funções
 static void InitAppConfig(void);
@@ -282,24 +276,24 @@ int main(void){
         // **** VTCD
         else if(FRAME_TXMESS==3){
 
+        for(aux=0;aux<j;aux++){
         //*****SAG
-        if(i==1){
-        i=0;  
+        if(Event[aux].i==2){  
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]=(((sagD>>12)&0x0f)+0x30);
-		FRAME_TXBUF[2]=(((sagD>>8)&0x0f)+0x30);
+        FRAME_TXBUF[1]=(((Event[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((Event[aux].date>>8)&0x0f)+0x30);
 		FRAME_TXBUF[3]='/';
-		FRAME_TXBUF[4]=(((sagD>>20)&0x0f)+0x30);
-		FRAME_TXBUF[5]=(((sagD>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[4]=(((Event[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((Event[aux].date>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
-		FRAME_TXBUF[7]=(((sagT>>28)&0x0f)+0x30);
-		FRAME_TXBUF[8]=(((sagT>>24)&0x0f)+0x30);
+		FRAME_TXBUF[7]=(((Event[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((Event[aux].time>>24)&0x0f)+0x30);
 		FRAME_TXBUF[9]=':';
-		FRAME_TXBUF[10]=(((sagT>>20)&0x0f)+0x30);
-		FRAME_TXBUF[11]=(((sagT>>16)&0x0f)+0x30);
+		FRAME_TXBUF[10]=(((Event[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((Event[aux].time>>16)&0x0f)+0x30);
         FRAME_TXBUF[12]=' '; 
         FRAME_TXBUF[13]='A';
-		FRAME_TXBUF[14]=sagEvent;
+		FRAME_TXBUF[14]=Event[aux].type;
         FRAME_TXBUF[15]='T';
         FRAME_TXBUF[16]=0x0D;
         FRAME_TXBUF[17]=0x0A;
@@ -308,23 +302,22 @@ int main(void){
         }
         
         //****SWELL
-        else if(j==1){
-        j=0;
+        else if(Event[aux].i==1){
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]=(((Swell[0].data>>12)&0x0f)+0x30);
-		FRAME_TXBUF[2]=(((Swell[0].data>>8)&0x0f)+0x30);
+        FRAME_TXBUF[1]=(((Event[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((Event[aux].date>>8)&0x0f)+0x30);
 		FRAME_TXBUF[3]='/';
-		FRAME_TXBUF[4]=(((Swell[0].data>>20)&0x0f)+0x30);
-		FRAME_TXBUF[5]=(((Swell[0].data>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[4]=(((Event[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((Event[aux].date>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
-		FRAME_TXBUF[7]=(((Swell[0].hora>>28)&0x0f)+0x30);
-		FRAME_TXBUF[8]=(((Swell[0].hora>>24)&0x0f)+0x30);
+		FRAME_TXBUF[7]=(((Event[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((Event[aux].time>>24)&0x0f)+0x30);
 		FRAME_TXBUF[9]=':';
-		FRAME_TXBUF[10]=(((Swell[0].hora>>20)&0x0f)+0x30);
-		FRAME_TXBUF[11]=(((Swell[0].hora>>16)&0x0f)+0x30);
+		FRAME_TXBUF[10]=(((Event[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((Event[aux].time>>16)&0x0f)+0x30);
         FRAME_TXBUF[12]=' '; 
         FRAME_TXBUF[13]='E';
-		FRAME_TXBUF[14]=Swell[0].tipo;  //De acordo com a duracao. EIT, EMT ou ETT
+		FRAME_TXBUF[14]=Event[aux].type;  //De acordo com a duracao. EIT, EMT ou ETT
         FRAME_TXBUF[15]='T';
         FRAME_TXBUF[16]=0x0D;
         FRAME_TXBUF[17]=0x0A;
@@ -342,6 +335,10 @@ int main(void){
         //Carrega no buffer os dados a serem transmitidos
         TCPPutArray(MySocket,FRAME_TXBUF,5);
         }
+
+        TCPFlush(MySocket);
+        //TCPServerState=SM_PROCESS_RECEIVE; 
+        }//End For
 
         }//End of VTCD
         
@@ -370,7 +367,7 @@ int main(void){
         FRAME_TXBUF[18]=0x0D;
         FRAME_TXBUF[19]=0x0A;   
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,20);         
+        TCPPutArray(MySocket,FRAME_TXBUF,20);        
         }
  
         // ***** CDT 
@@ -381,7 +378,7 @@ int main(void){
         FRAME_TXBUF[3]=0x0D;
         FRAME_TXBUF[4]=0x0A;    
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,5);          
+        TCPPutArray(MySocket,FRAME_TXBUF,5);       
         }     
 
         //Se for o caso realiza a transmissão
@@ -575,11 +572,12 @@ void __ISR(_TIMER_2_VECTOR,ipl6) _T2Interrupt(void){
   getAVRMS();
 
   if(VARMS < 0.9*VRMS){
-     IEC0bits.T3IE=1; //Inicia a interrupção do Timer3
+     IEC0bits.T3IE=1; //Inicia a interrupção do Timer3 --> VTCD detectada
+     Event[j].i=2; //2 = SAG
   }
-
   if(VARMS > 1.1*VRMS){
-     IEC0bits.T4IE=1; //Inicia a interrupção do Timer4
+     IEC0bits.T3IE=1; //Inicia a interrupção do Timer3 --> VTCD detectada
+     Event[j].i=1; //1 = SWELL 
   }
 
   getBVRMS();
@@ -596,18 +594,23 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
   
   count++;
 
-  if(VARMS >= 0.9*VRMS){
+  if(VARMS >= 0.9*VRMS && VARMS <= 1.1*VRMS){
+
      IEC0bits.T3IE=0;     //Desabilita a interrupcao do Timer3
      temp = 0.016*count;  //Calcula a duração da VTCD
 
-     if(temp < 0.5){sagEvent=0x49;}                   //Instantaneo
-     else if(temp >= 0.5 && temp < 3){sagEvent=0x4D;} //Momentaneo
-     else {sagEvent=0x54;}                            //Temporario
+     if(temp < 0.5){Event[j].type=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){Event[j].type=0x4D;} //Momentaneo
+     else {Event[j].type=0x54;}                            //Temporario
 
-     sagT=RTCTIME;        //Salva o momento da ocorrencia
-     sagD=RTCDATE;        //Salva a data da ocorrencia
-     count=0;             //Zera o contador
-     i=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SAG
+     Event[j].time=RTCTIME;   //Salva o momento da ocorrencia
+     Event[j].date=RTCDATE;   //Salva a data da ocorrencia
+     count=0;                 //Zera o contador
+     j++;
+     
+     if(j==10){
+       j=0;
+     }
   }
 }
 
@@ -619,19 +622,4 @@ void __ISR(_TIMER_4_VECTOR,ipl5) _T4Interrupt(void){
   //Limpa o flag da interrupção 
   IFS0bits.T4IF=0;
   
-  count++;
-
-  if(VARMS <= 1.1*VRMS){
-     IEC0bits.T4IE=0; //Desabilita a interrupcao do Timer4
-     temp = 0.016*count;
-
-     if(temp < 0.5){Swell[0].tipo=0x49;}                   //Instantaneo
-     else if(temp >= 0.5 && temp < 3){Swell[0].tipo=0x4D;} //Momentaneo
-     else {Swell[0].tipo=0x54;}                            //Temporario
-     
-     Swell[0].hora=RTCTIME;      //Salva o momento da ocorrencia
-     Swell[0].data=RTCDATE;      //Salva a data da ocorrencia 
-     count=0;             //Zera o contador
-     j=1;                 //Variavel auxiliar que indica a ocorrencia de um evento de SWELL
-  }
 }
