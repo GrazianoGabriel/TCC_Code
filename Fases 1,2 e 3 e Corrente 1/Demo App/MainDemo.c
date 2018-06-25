@@ -40,6 +40,7 @@
 
 //* Define tensao nominal da rede
 #define VRMS   127000
+#define max    5
 
 //* Defines Calibragem
 #define PLACA2
@@ -63,7 +64,7 @@ APP_CONFIG AppConfig;
 unsigned char SPI_DUMMY;
 unsigned char SPI_DATA_RX[3];
 unsigned char j=0;
-unsigned char aux;
+unsigned char aux=0;
 static signed int    VARMS;
 static signed int    VBRMS;
 static signed int    VCRMS;
@@ -80,7 +81,7 @@ typedef struct
   unsigned char i;
 } VTCD;
 
-VTCD Event[10];
+VTCD Event[max];
 
 //* Funções
 static void InitAppConfig(void);
@@ -261,7 +262,7 @@ int main(void){
 
           //Verifica se ocorreu VTCD - Variacao de Tensao de Curta Duracao
           else if(FRAME_RXBUF[0]=='V' && FRAME_RXBUF[1]=='T' && FRAME_RXBUF[2]=='C' && FRAME_RXBUF[3]=='D'){
-            FRAME_TXMESS=3;  
+            FRAME_TXMESS=3; 
             TCPServerState=SM_PROCESS_TRANSMIT;
           } 
        }
@@ -275,8 +276,12 @@ int main(void){
         
         // **** VTCD
         else if(FRAME_TXMESS==3){
+        
+        //if(j>0) aux = j-1;
+        //else aux = j;
 
-        for(aux=0;aux<j;aux++){
+        if(aux==max) aux=0;
+
         //*****SAG
         if(Event[aux].i==2){  
         FRAME_TXBUF[0]=0x20; 
@@ -335,10 +340,9 @@ int main(void){
         //Carrega no buffer os dados a serem transmitidos
         TCPPutArray(MySocket,FRAME_TXBUF,5);
         }
-
+        aux++;
         TCPFlush(MySocket);
         //TCPServerState=SM_PROCESS_RECEIVE; 
-        }//End For
 
         }//End of VTCD
         
@@ -608,7 +612,7 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
      count=0;                 //Zera o contador
      j++;
      
-     if(j==10){
+     if(j==max){
        j=0;
      }
   }
