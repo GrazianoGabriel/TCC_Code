@@ -79,6 +79,7 @@ typedef struct
   unsigned long time;
   unsigned char type;
   unsigned char i;
+  unsigned char phase;
 } VTCD;
 
 VTCD Event[max];
@@ -169,12 +170,19 @@ int main(void){
   IFS0bits.T3IF=0;                  //Interrupt flag
   IEC0bits.T3IE=0;					//Habilita interrupção para o Timer3 quando ocorrer SAG
 
-  //***** Configurações do Timer4 T4 para 16ms
+  //***** Configurações do Timer4 T4 para 10ms
   T4CON=0x8070;                     //Prescaler de 1/256 = 80/256 = 0,3125MHz (3,2us)
-  PR4=5000;                         //Carga para comparação = 5000 x 3,2us = 16ms
-  IPC4bits.T4IP=5;					//Interrupt priority 5
+  PR4=3125;                         //Carga para comparação = 3125 x 3,2us = 10ms
+  IPC4bits.T4IP=4;					//Interrupt priority 5
   IFS0bits.T4IF=0;                  //Interrupt flag
   IEC0bits.T4IE=0;					//Habilita interrupção para o Timer3 quando ocorrer SAG
+
+  //***** Configurações do Timer5 T5 para 15ms
+  T5CON=0x8070;                     //Prescaler de 1/256 = 80/256 = 0,3125MHz (3,2us)
+  PR5=4688;                         //Carga para comparação = 3125 x 3,2us = 15ms
+  IPC5bits.T5IP=3;					//Interrupt priority 3
+  IFS0bits.T5IF=0;                  //Interrupt flag
+  IEC0bits.T5IE=0;					//Habilita interrupção para o Timer3 quando ocorrer SAG
 
   //****** Reseta o PHY Ehernet
   PHY_RST=0;   
@@ -276,12 +284,11 @@ int main(void){
         
         // **** VTCD
         else if(FRAME_TXMESS==3){
-        
-        //if(j>0) aux = j-1;
-        //else aux = j;
 
-        if(aux==max) aux=0;
-
+        //if(aux==max) aux=0;
+        if(j!=0)aux = j-1;
+        else aux = j;
+      
         //*****SAG
         if(Event[aux].i==2){  
         FRAME_TXBUF[0]=0x20; 
@@ -300,10 +307,12 @@ int main(void){
         FRAME_TXBUF[13]='A';
 		FRAME_TXBUF[14]=Event[aux].type;
         FRAME_TXBUF[15]='T';
-        FRAME_TXBUF[16]=0x0D;
-        FRAME_TXBUF[17]=0x0A;
+        FRAME_TXBUF[16]=' ';
+        FRAME_TXBUF[17]=Event[aux].phase;
+        FRAME_TXBUF[18]=0x0D;
+        FRAME_TXBUF[19]=0x0A;
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,18);
+        TCPPutArray(MySocket,FRAME_TXBUF,20);
         }
         
         //****SWELL
@@ -324,10 +333,12 @@ int main(void){
         FRAME_TXBUF[13]='E';
 		FRAME_TXBUF[14]=Event[aux].type;  //De acordo com a duracao. EIT, EMT ou ETT
         FRAME_TXBUF[15]='T';
-        FRAME_TXBUF[16]=0x0D;
-        FRAME_TXBUF[17]=0x0A;
+        FRAME_TXBUF[16]=' ';
+        FRAME_TXBUF[17]=Event[aux].phase;
+        FRAME_TXBUF[18]=0x0D;
+        FRAME_TXBUF[19]=0x0A;
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,18);
+        TCPPutArray(MySocket,FRAME_TXBUF,20);
         }
         
         //****Operacao Normal
@@ -340,9 +351,10 @@ int main(void){
         //Carrega no buffer os dados a serem transmitidos
         TCPPutArray(MySocket,FRAME_TXBUF,5);
         }
-        aux++;
+
+        //aux++;
         TCPFlush(MySocket);
-        //TCPServerState=SM_PROCESS_RECEIVE; 
+        TCPServerState=SM_PROCESS_RECEIVE; 
 
         }//End of VTCD
         
@@ -574,7 +586,7 @@ void __ISR(_TIMER_2_VECTOR,ipl6) _T2Interrupt(void){
 
   //Realiza a aquisição das tensões RMS
   getAVRMS();
-
+  /*
   if(VARMS < 0.9*VRMS){
      IEC0bits.T3IE=1; //Inicia a interrupção do Timer3 --> VTCD detectada
      Event[j].i=2; //2 = SAG
@@ -583,13 +595,33 @@ void __ISR(_TIMER_2_VECTOR,ipl6) _T2Interrupt(void){
      IEC0bits.T3IE=1; //Inicia a interrupção do Timer3 --> VTCD detectada
      Event[j].i=1; //1 = SWELL 
   }
-
+  */
   getBVRMS();
+  /*
+  if(VBRMS < 0.9*VRMS){
+     IEC0bits.T4IE=1; //Inicia a interrupção do Timer4 --> VTCD detectada
+     Event[j].i=2; //2 = SAG
+  }
+  if(VBRMS > 1.1*VRMS){
+     IEC0bits.T4IE=1; //Inicia a interrupção do Timer4 --> VTCD detectada
+     Event[j].i=1; //1 = SWELL 
+  }
+  */
   getCVRMS();
+
+  if(VCRMS < 0.9*VRMS){
+     IEC0bits.T5IE=1; //Inicia a interrupção do Timer5 --> VTCD detectada
+     Event[j].i=2; //2 = SAG
+  }
+  if(VCRMS > 1.1*VRMS){
+     IEC0bits.T5IE=1; //Inicia a interrupção do Timer5 --> VTCD detectada
+     Event[j].i=1; //1 = SWELL 
+  }
 }
 
 /*********************************************************************
 **************************** Timer 3 Interrupt ***********************
+******************************** PHASE A *****************************
 *********************************************************************/
 void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){ 
 
@@ -609,6 +641,7 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
 
      Event[j].time=RTCTIME;   //Salva o momento da ocorrencia
      Event[j].date=RTCDATE;   //Salva a data da ocorrencia
+     Event[j].phase=0x41;
      count=0;                 //Zera o contador
      j++;
      
@@ -620,10 +653,66 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
 
 /*********************************************************************
 **************************** Timer 4 Interrupt ***********************
+******************************** PHASE B *****************************
 *********************************************************************/
-void __ISR(_TIMER_4_VECTOR,ipl5) _T4Interrupt(void){ 
+void __ISR(_TIMER_4_VECTOR,ipl4) _T4Interrupt(void){ 
 
   //Limpa o flag da interrupção 
   IFS0bits.T4IF=0;
+
+  count++;
+
+  if(VBRMS >= 0.9*VRMS && VBRMS <= 1.1*VRMS){
+
+     IEC0bits.T4IE=0;     //Desabilita a interrupcao do Timer4
+     temp = 0.01*count;  //Calcula a duração da VTCD
+
+     if(temp < 0.2){Event[j].type=0x49;}                   //Instantaneo
+     else if(temp >= 0.2 && temp < 3){Event[j].type=0x4D;} //Momentaneo
+     else {Event[j].type=0x54;}                            //Temporario
+
+     Event[j].time=RTCTIME;   //Salva o momento da ocorrencia
+     Event[j].date=RTCDATE;   //Salva a data da ocorrencia
+     Event[j].phase=0x42;
+     count=0;                 //Zera o contador
+     j++;
+     
+     if(j==max){
+       j=0;
+     }
+  }
+  
+}
+
+/*********************************************************************
+**************************** Timer 5 Interrupt ***********************
+******************************** PHASE C *****************************
+*********************************************************************/
+void __ISR(_TIMER_5_VECTOR,ipl3) _T5Interrupt(void){ 
+
+  //Limpa o flag da interrupção 
+  IFS0bits.T5IF=0;
+
+  count++;
+
+  if(VCRMS >= 0.9*VRMS && VCRMS <= 1.1*VRMS){
+
+     IEC0bits.T5IE=0;     //Desabilita a interrupcao do Timer5
+     temp = 0.01*count;  //Calcula a duração da VTCD
+
+     if(temp < 0.5){Event[j].type=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){Event[j].type=0x4D;} //Momentaneo
+     else {Event[j].type=0x54;}                            //Temporario
+
+     Event[j].time=RTCTIME;   //Salva o momento da ocorrencia
+     Event[j].date=RTCDATE;   //Salva a data da ocorrencia
+     Event[j].phase=0x43;
+     count=0;                 //Zera o contador
+     j++;
+     
+     if(j==max){
+       j=0;
+     }
+  }
   
 }
