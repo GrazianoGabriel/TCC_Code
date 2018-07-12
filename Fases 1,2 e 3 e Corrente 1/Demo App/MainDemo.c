@@ -681,7 +681,6 @@ void __ISR(_TIMER_4_VECTOR,ipl4) _T4Interrupt(void){
        j=0;
      }
   }
-  
 }
 
 /*********************************************************************
@@ -713,6 +712,5 @@ void __ISR(_TIMER_5_VECTOR,ipl3) _T5Interrupt(void){
      if(j==max){
        j=0;
      }
-  }
-  
+  } 
 }
