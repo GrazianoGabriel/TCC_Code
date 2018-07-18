@@ -64,12 +64,16 @@ APP_CONFIG AppConfig;
 unsigned char SPI_DUMMY;
 unsigned char SPI_DATA_RX[3];
 unsigned char j=0;
+unsigned char k=0;
+unsigned char l=0;
 unsigned char aux=0;
 static signed int    VARMS;
 static signed int    VBRMS;
 static signed int    VCRMS;
 static signed int    FQA; 
-unsigned int count=0; 
+unsigned int count1=0; 
+unsigned int count2=0;
+unsigned int count3=0;
 float temp=0;
 
 //Cria STRUCT VTCD
@@ -79,10 +83,12 @@ typedef struct
   unsigned long time;
   unsigned char type;
   unsigned char i;
-  unsigned char phase;
 } VTCD;
 
-VTCD Event[max];
+//Cria um objeto VTCD, te tamanho "max", para cada uma das fases
+VTCD PhaseA[max];
+VTCD PhaseB[max];
+VTCD PhaseC[max];
 
 //* Funções
 static void InitAppConfig(void);
@@ -268,9 +274,21 @@ int main(void){
             TCPServerState=SM_PROCESS_TRANSMIT;  
           }
 
-          //Verifica se ocorreu VTCD - Variacao de Tensao de Curta Duracao
-          else if(FRAME_RXBUF[0]=='V' && FRAME_RXBUF[1]=='T' && FRAME_RXBUF[2]=='C' && FRAME_RXBUF[3]=='D'){
+          //Verifica se ocorreu VTCD - Fase A
+          else if(FRAME_RXBUF[0]=='F' && FRAME_RXBUF[1]=='A'){
             FRAME_TXMESS=3; 
+            TCPServerState=SM_PROCESS_TRANSMIT;
+          }
+
+          //Verifica se ocorreu VTCD - Fase B
+          else if(FRAME_RXBUF[0]=='F' && FRAME_RXBUF[1]=='B'){
+            FRAME_TXMESS=4; 
+            TCPServerState=SM_PROCESS_TRANSMIT;
+          }
+
+          //Verifica se ocorreu VTCD - Fase C
+          else if(FRAME_RXBUF[0]=='F' && FRAME_RXBUF[1]=='C'){
+            FRAME_TXMESS=5; 
             TCPServerState=SM_PROCESS_TRANSMIT;
           } 
        }
@@ -282,7 +300,7 @@ int main(void){
         //Se não puder carregar o buffer TX, sai
         if(TCPIsPutReady(MySocket)<20u) break;
         
-        // **** VTCD
+        // **** VTCD - Fase A ****
         else if(FRAME_TXMESS==3){
 
         //if(aux==max) aux=0;
@@ -290,55 +308,51 @@ int main(void){
         else aux = j;
       
         //*****SAG
-        if(Event[aux].i==2){  
+        if(PhaseA[aux].i==2){  
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]=(((Event[aux].date>>12)&0x0f)+0x30);
-		FRAME_TXBUF[2]=(((Event[aux].date>>8)&0x0f)+0x30);
+        FRAME_TXBUF[1]=(((PhaseA[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((PhaseA[aux].date>>8)&0x0f)+0x30);
 		FRAME_TXBUF[3]='/';
-		FRAME_TXBUF[4]=(((Event[aux].date>>20)&0x0f)+0x30);
-		FRAME_TXBUF[5]=(((Event[aux].date>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[4]=(((PhaseA[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((PhaseA[aux].date>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
-		FRAME_TXBUF[7]=(((Event[aux].time>>28)&0x0f)+0x30);
-		FRAME_TXBUF[8]=(((Event[aux].time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[7]=(((PhaseA[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((PhaseA[aux].time>>24)&0x0f)+0x30);
 		FRAME_TXBUF[9]=':';
-		FRAME_TXBUF[10]=(((Event[aux].time>>20)&0x0f)+0x30);
-		FRAME_TXBUF[11]=(((Event[aux].time>>16)&0x0f)+0x30);
+		FRAME_TXBUF[10]=(((PhaseA[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((PhaseA[aux].time>>16)&0x0f)+0x30);
         FRAME_TXBUF[12]=' '; 
         FRAME_TXBUF[13]='A';
-		FRAME_TXBUF[14]=Event[aux].type;
+		FRAME_TXBUF[14]=PhaseA[aux].type;
         FRAME_TXBUF[15]='T';
-        FRAME_TXBUF[16]=' ';
-        FRAME_TXBUF[17]=Event[aux].phase;
-        FRAME_TXBUF[18]=0x0D;
-        FRAME_TXBUF[19]=0x0A;
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,20);
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
         }
         
         //****SWELL
-        else if(Event[aux].i==1){
+        else if(PhaseA[aux].i==1){
         FRAME_TXBUF[0]=0x20; 
-        FRAME_TXBUF[1]=(((Event[aux].date>>12)&0x0f)+0x30);
-		FRAME_TXBUF[2]=(((Event[aux].date>>8)&0x0f)+0x30);
+        FRAME_TXBUF[1]=(((PhaseA[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((PhaseA[aux].date>>8)&0x0f)+0x30);
 		FRAME_TXBUF[3]='/';
-		FRAME_TXBUF[4]=(((Event[aux].date>>20)&0x0f)+0x30);
-		FRAME_TXBUF[5]=(((Event[aux].date>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[4]=(((PhaseA[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((PhaseA[aux].date>>16)&0x0f)+0x30); 
 		FRAME_TXBUF[6]=' ';
-		FRAME_TXBUF[7]=(((Event[aux].time>>28)&0x0f)+0x30);
-		FRAME_TXBUF[8]=(((Event[aux].time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[7]=(((PhaseA[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((PhaseA[aux].time>>24)&0x0f)+0x30);
 		FRAME_TXBUF[9]=':';
-		FRAME_TXBUF[10]=(((Event[aux].time>>20)&0x0f)+0x30);
-		FRAME_TXBUF[11]=(((Event[aux].time>>16)&0x0f)+0x30);
+		FRAME_TXBUF[10]=(((PhaseA[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((PhaseA[aux].time>>16)&0x0f)+0x30);
         FRAME_TXBUF[12]=' '; 
         FRAME_TXBUF[13]='E';
-		FRAME_TXBUF[14]=Event[aux].type;  //De acordo com a duracao. EIT, EMT ou ETT
+		FRAME_TXBUF[14]=PhaseA[aux].type;  //De acordo com a duracao. EIT, EMT ou ETT
         FRAME_TXBUF[15]='T';
-        FRAME_TXBUF[16]=' ';
-        FRAME_TXBUF[17]=Event[aux].phase;
-        FRAME_TXBUF[18]=0x0D;
-        FRAME_TXBUF[19]=0x0A;
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
         //Carrega no buffer os dados a serem transmitidos
-        TCPPutArray(MySocket,FRAME_TXBUF,20);
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
         }
         
         //****Operacao Normal
@@ -352,12 +366,153 @@ int main(void){
         TCPPutArray(MySocket,FRAME_TXBUF,5);
         }
 
-        //aux++;
         TCPFlush(MySocket);
         TCPServerState=SM_PROCESS_RECEIVE; 
 
-        }//End of VTCD
+        }//End of VTCD - Fase A ****
         
+        // **** VTCD - Fase B ****
+        else if(FRAME_TXMESS==4){
+
+        //if(aux==max) aux=0;
+        if(k!=0)aux = k-1;
+        else aux = k;
+      
+        //*****SAG
+        if(PhaseB[aux].i==2){  
+        FRAME_TXBUF[0]=0x20; 
+        FRAME_TXBUF[1]=(((PhaseB[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((PhaseB[aux].date>>8)&0x0f)+0x30);
+		FRAME_TXBUF[3]='/';
+		FRAME_TXBUF[4]=(((PhaseB[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((PhaseB[aux].date>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[6]=' ';
+		FRAME_TXBUF[7]=(((PhaseB[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((PhaseB[aux].time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[9]=':';
+		FRAME_TXBUF[10]=(((PhaseB[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((PhaseB[aux].time>>16)&0x0f)+0x30);
+        FRAME_TXBUF[12]=' '; 
+        FRAME_TXBUF[13]='A';
+		FRAME_TXBUF[14]=PhaseB[aux].type;
+        FRAME_TXBUF[15]='T';
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
+        //Carrega no buffer os dados a serem transmitidos
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
+        }
+        
+        //****SWELL
+        else if(PhaseB[aux].i==1){
+        FRAME_TXBUF[0]=0x20; 
+        FRAME_TXBUF[1]=(((PhaseB[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((PhaseB[aux].date>>8)&0x0f)+0x30);
+		FRAME_TXBUF[3]='/';
+		FRAME_TXBUF[4]=(((PhaseB[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((PhaseB[aux].date>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[6]=' ';
+		FRAME_TXBUF[7]=(((PhaseB[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((PhaseB[aux].time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[9]=':';
+		FRAME_TXBUF[10]=(((PhaseB[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((PhaseB[aux].time>>16)&0x0f)+0x30);
+        FRAME_TXBUF[12]=' '; 
+        FRAME_TXBUF[13]='E';
+		FRAME_TXBUF[14]=PhaseB[aux].type;  //De acordo com a duracao. EIT, EMT ou ETT
+        FRAME_TXBUF[15]='T';
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
+        //Carrega no buffer os dados a serem transmitidos
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
+        }
+        
+        //****Operacao Normal
+        else{
+        FRAME_TXBUF[0]=0x20; 
+        FRAME_TXBUF[1]='N';
+        FRAME_TXBUF[2]='O';    
+        FRAME_TXBUF[3]=0x0D;
+        FRAME_TXBUF[4]=0x0A;    
+        //Carrega no buffer os dados a serem transmitidos
+        TCPPutArray(MySocket,FRAME_TXBUF,5);
+        }
+
+        TCPFlush(MySocket);
+        TCPServerState=SM_PROCESS_RECEIVE; 
+
+        }//End of VTCD - Fase B ****
+
+// **** VTCD - Fase C ****
+        else if(FRAME_TXMESS==5){
+
+        //if(aux==max) aux=0;
+        if(l!=0)aux = l-1;
+        else aux = l;
+      
+        //*****SAG
+        if(PhaseC[aux].i==2){  
+        FRAME_TXBUF[0]=0x20; 
+        FRAME_TXBUF[1]=(((PhaseC[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((PhaseC[aux].date>>8)&0x0f)+0x30);
+		FRAME_TXBUF[3]='/';
+		FRAME_TXBUF[4]=(((PhaseC[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((PhaseC[aux].date>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[6]=' ';
+		FRAME_TXBUF[7]=(((PhaseC[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((PhaseC[aux].time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[9]=':';
+		FRAME_TXBUF[10]=(((PhaseC[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((PhaseC[aux].time>>16)&0x0f)+0x30);
+        FRAME_TXBUF[12]=' '; 
+        FRAME_TXBUF[13]='A';
+		FRAME_TXBUF[14]=PhaseC[aux].type;
+        FRAME_TXBUF[15]='T';
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
+        //Carrega no buffer os dados a serem transmitidos
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
+        }
+        
+        //****SWELL
+        else if(PhaseC[aux].i==1){
+        FRAME_TXBUF[0]=0x20; 
+        FRAME_TXBUF[1]=(((PhaseC[aux].date>>12)&0x0f)+0x30);
+		FRAME_TXBUF[2]=(((PhaseC[aux].date>>8)&0x0f)+0x30);
+		FRAME_TXBUF[3]='/';
+		FRAME_TXBUF[4]=(((PhaseC[aux].date>>20)&0x0f)+0x30);
+		FRAME_TXBUF[5]=(((PhaseC[aux].date>>16)&0x0f)+0x30); 
+		FRAME_TXBUF[6]=' ';
+		FRAME_TXBUF[7]=(((PhaseC[aux].time>>28)&0x0f)+0x30);
+		FRAME_TXBUF[8]=(((PhaseC[aux].time>>24)&0x0f)+0x30);
+		FRAME_TXBUF[9]=':';
+		FRAME_TXBUF[10]=(((PhaseC[aux].time>>20)&0x0f)+0x30);
+		FRAME_TXBUF[11]=(((PhaseC[aux].time>>16)&0x0f)+0x30);
+        FRAME_TXBUF[12]=' '; 
+        FRAME_TXBUF[13]='E';
+		FRAME_TXBUF[14]=PhaseC[aux].type;  //De acordo com a duracao. EIT, EMT ou ETT
+        FRAME_TXBUF[15]='T';
+        FRAME_TXBUF[16]=0x0D;
+        FRAME_TXBUF[17]=0x0A;
+        //Carrega no buffer os dados a serem transmitidos
+        TCPPutArray(MySocket,FRAME_TXBUF,18);
+        }
+        
+        //****Operacao Normal
+        else{
+        FRAME_TXBUF[0]=0x20; 
+        FRAME_TXBUF[1]='N';
+        FRAME_TXBUF[2]='O';    
+        FRAME_TXBUF[3]=0x0D;
+        FRAME_TXBUF[4]=0x0A;    
+        //Carrega no buffer os dados a serem transmitidos
+        TCPPutArray(MySocket,FRAME_TXBUF,5);
+        }
+
+        TCPFlush(MySocket);
+        TCPServerState=SM_PROCESS_RECEIVE; 
+
+        }//End of VTCD - Fase C****
+
         // **** VDT
         else if(FRAME_TXMESS==2){     
         //RTC_DATE=RTCDATE;
@@ -586,37 +741,38 @@ void __ISR(_TIMER_2_VECTOR,ipl6) _T2Interrupt(void){
 
   //Realiza a aquisição das tensões RMS
   getAVRMS();
-  /*
+  
   if(VARMS < 0.9*VRMS){
      IEC0bits.T3IE=1; //Inicia a interrupção do Timer3 --> VTCD detectada
-     Event[j].i=2; //2 = SAG
+     PhaseA[j].i=2; //2 = SAG
   }
   if(VARMS > 1.1*VRMS){
      IEC0bits.T3IE=1; //Inicia a interrupção do Timer3 --> VTCD detectada
-     Event[j].i=1; //1 = SWELL 
+     PhaseA[j].i=1; //1 = SWELL 
   }
-  */
+  
   getBVRMS();
-  /*
+  
   if(VBRMS < 0.9*VRMS){
      IEC0bits.T4IE=1; //Inicia a interrupção do Timer4 --> VTCD detectada
-     Event[j].i=2; //2 = SAG
+     PhaseB[k].i=2; //2 = SAG
   }
   if(VBRMS > 1.1*VRMS){
      IEC0bits.T4IE=1; //Inicia a interrupção do Timer4 --> VTCD detectada
-     Event[j].i=1; //1 = SWELL 
+     PhaseB[k].i=1; //1 = SWELL 
   }
-  */
+  
   getCVRMS();
-
+  
   if(VCRMS < 0.9*VRMS){
      IEC0bits.T5IE=1; //Inicia a interrupção do Timer5 --> VTCD detectada
-     Event[j].i=2; //2 = SAG
+     PhaseC[l].i=2; //2 = SAG
   }
   if(VCRMS > 1.1*VRMS){
      IEC0bits.T5IE=1; //Inicia a interrupção do Timer5 --> VTCD detectada
-     Event[j].i=1; //1 = SWELL 
+     PhaseC[l].i=1; //1 = SWELL 
   }
+
 }
 
 /*********************************************************************
@@ -628,21 +784,20 @@ void __ISR(_TIMER_3_VECTOR,ipl5) _T3Interrupt(void){
   //Limpa o flag da interrupção 
   IFS0bits.T3IF=0;
   
-  count++;
+  count1++;
 
   if(VARMS >= 0.9*VRMS && VARMS <= 1.1*VRMS){
 
      IEC0bits.T3IE=0;     //Desabilita a interrupcao do Timer3
-     temp = 0.016*count;  //Calcula a duração da VTCD
+     temp = 0.016*count1;  //Calcula a duração da VTCD
 
-     if(temp < 0.5){Event[j].type=0x49;}                   //Instantaneo
-     else if(temp >= 0.5 && temp < 3){Event[j].type=0x4D;} //Momentaneo
-     else {Event[j].type=0x54;}                            //Temporario
+     if(temp < 0.5){PhaseA[j].type=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){PhaseA[j].type=0x4D;} //Momentaneo
+     else {PhaseA[j].type=0x54;}                            //Temporario
 
-     Event[j].time=RTCTIME;   //Salva o momento da ocorrencia
-     Event[j].date=RTCDATE;   //Salva a data da ocorrencia
-     Event[j].phase=0x41;
-     count=0;                 //Zera o contador
+     PhaseA[j].time=RTCTIME;   //Salva o momento da ocorrencia
+     PhaseA[j].date=RTCDATE;   //Salva a data da ocorrencia
+     count1=0;                 //Zera o contador
      j++;
      
      if(j==max){
@@ -660,25 +815,24 @@ void __ISR(_TIMER_4_VECTOR,ipl4) _T4Interrupt(void){
   //Limpa o flag da interrupção 
   IFS0bits.T4IF=0;
 
-  count++;
+  count2++;
 
   if(VBRMS >= 0.9*VRMS && VBRMS <= 1.1*VRMS){
 
      IEC0bits.T4IE=0;     //Desabilita a interrupcao do Timer4
-     temp = 0.01*count;  //Calcula a duração da VTCD
+     temp = 0.01*count2;  //Calcula a duração da VTCD
 
-     if(temp < 0.2){Event[j].type=0x49;}                   //Instantaneo
-     else if(temp >= 0.2 && temp < 3){Event[j].type=0x4D;} //Momentaneo
-     else {Event[j].type=0x54;}                            //Temporario
+     if(temp < 0.2){PhaseB[k].type=0x49;}                   //Instantaneo
+     else if(temp >= 0.2 && temp < 3){PhaseB[k].type=0x4D;} //Momentaneo
+     else {PhaseB[k].type=0x54;}                            //Temporario
 
-     Event[j].time=RTCTIME;   //Salva o momento da ocorrencia
-     Event[j].date=RTCDATE;   //Salva a data da ocorrencia
-     Event[j].phase=0x42;
-     count=0;                 //Zera o contador
-     j++;
+     PhaseB[k].time=RTCTIME;   //Salva o momento da ocorrencia
+     PhaseB[k].date=RTCDATE;   //Salva a data da ocorrencia
+     count2=0;                 //Zera o contador
+     k++;
      
-     if(j==max){
-       j=0;
+     if(k==max){
+       k=0;
      }
   }
 }
@@ -692,25 +846,24 @@ void __ISR(_TIMER_5_VECTOR,ipl3) _T5Interrupt(void){
   //Limpa o flag da interrupção 
   IFS0bits.T5IF=0;
 
-  count++;
+  count3++;
 
   if(VCRMS >= 0.9*VRMS && VCRMS <= 1.1*VRMS){
 
      IEC0bits.T5IE=0;     //Desabilita a interrupcao do Timer5
-     temp = 0.01*count;  //Calcula a duração da VTCD
+     temp = 0.01*count3;  //Calcula a duração da VTCD
 
-     if(temp < 0.5){Event[j].type=0x49;}                   //Instantaneo
-     else if(temp >= 0.5 && temp < 3){Event[j].type=0x4D;} //Momentaneo
-     else {Event[j].type=0x54;}                            //Temporario
+     if(temp < 0.5){PhaseC[l].type=0x49;}                   //Instantaneo
+     else if(temp >= 0.5 && temp < 3){PhaseC[l].type=0x4D;} //Momentaneo
+     else {PhaseC[l].type=0x54;}                            //Temporario
 
-     Event[j].time=RTCTIME;   //Salva o momento da ocorrencia
-     Event[j].date=RTCDATE;   //Salva a data da ocorrencia
-     Event[j].phase=0x43;
-     count=0;                 //Zera o contador
-     j++;
+     PhaseC[l].time=RTCTIME;   //Salva o momento da ocorrencia
+     PhaseC[l].date=RTCDATE;   //Salva a data da ocorrencia
+     count3=0;                 //Zera o contador
+     l++;
      
-     if(j==max){
-       j=0;
+     if(l==max){
+       l=0;
      }
   } 
 }
